@@ -153,26 +153,20 @@ def draw_keyboard(ctx, keys):
         key()
         ctx.restore()
 
-def keyboard_to_png(keys, file, scale=1)
-    surface = cairo.ImageSurface (cairo.FORMAT_ARGB32,
-                                  scale*825,
-                                  scale*340)
-    ctx = cairo.Context (surface)
+def draw_keyboard_to_ctx(ctx, keys, scale=1):
     ctx.set_source_rgba(1,1,1,0)
     ctx.paint()
-
+    ctx.scale(scale,scale)
     ctx.translate(10,10)
     draw_keyboard(ctx, keys)
 
+def draw_keyboard_to_png(keys, file, scale=1):
+    surface = cairo.ImageSurface (cairo.FORMAT_ARGB32,
+                                  int(scale*825),
+                                  int(scale*340))
+    ctx = cairo.Context (surface)
+    ctx.scale(scale,scale)
+    draw_keyboard_to_ctx(ctx, keys, scale=1)
     surface.write_to_png(file)
 
-if __name__ == "__main__":
-    surface = cairo.ImageSurface (cairo.FORMAT_ARGB32, 825, 340)
-    ctx = cairo.Context (surface)
-    ctx.set_source_rgba(1,1,1,0)
-    ctx.paint()
-
-    ctx.translate(10,10)
-    draw_keyboard(ctx, ["T-","P-","K","W","A","E","U"])
-
-    surface.write_to_png("test.png")
+draw_keyboard_to_png(["K","W","R-"], "test.png")

@@ -54,18 +54,31 @@ def draw_key_base(ctx, shape, base_color, width=60, height=100):
     ctx.set_source(bg)
     shape(ctx, 4+4, width,height)
 
+def draw_key_shadow(ctx,shape,width,height):
+    ctx.save()
+    for x in xrange(5,15):
+        for y in xrange(5,15):
+            ctx.translate(1,0)
+            ctx.set_source_rgba(0,0,0,0.005)
+            shape(ctx,0,width,height)
+        ctx.translate(-10,1)
+    ctx.restore()
+
+
+
 def draw_key(ctx, shape, base_color, letter, lettercolor, bold, width=60, height=100):
     """
     Draw a key with the given letter.
     """
+    draw_key_shadow(ctx,shape,width,height)
     draw_key_base(ctx,shape,base_color,width,height)
     ctx.set_font_size(50)
+    ctx.select_font_face("", 0, cairo.FONT_WEIGHT_BOLD if bold else 0)
     xb, yb, w, h, _, _, = ctx.text_extents(letter)
     ctx.move_to((width-w)/2 - xb, (height-h)/2-yb-7)
     ctx.set_line_width(8)
     ctx.set_source_rgb(*base_color)
     ctx.set_line_join(cairo.LINE_JOIN_ROUND)
-    ctx.select_font_face("", 0, cairo.FONT_WEIGHT_BOLD if bold else 0)
     ctx.text_path(letter)
     ctx.stroke()
     ctx.move_to((width-w)/2 - xb, (height-h)/2-yb-8)
@@ -81,7 +94,7 @@ if __name__ == "__main__":
     ctx.paint()
 
     ctx.translate(10,10)
-    draw_key(ctx, round_shape, (.1,.2,.3), "B", (1,1,1), False, width=60, height=100)
+    draw_key(ctx, round_shape, (.1,.2,.3), "W", (1,1,1), True, width=60, height=100)
 
 
     surface.write_to_png("test.png")

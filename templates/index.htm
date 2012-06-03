@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Automatic Steno Image Generator</title>
+    <style type="text/css" media="screen">
+      body {
+      text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Steno Keyboard Generator</h1>
+    Click on the keys.<br />
+    <img id="board" src="board.png" />
+    <br /><br />
+    Direct image URL: <a id="boardlink_big" href="board.png">board.png</a>
+    <br />
+    Small image URL: <a id="boardlink_small" href="board_small.png">board_small.png</a>
+
+    <script type="text/javascript">
+window.onload = function(){
+
+  var pressed = [];
+  var x=60 + 20, r=4*x + 80 + 20, l = 100 + 10, v = l*2;
+  var keymap = {
+    "S-": [0*x,0, 60, 210],
+    "T-": [1*x,0],
+    "P-": [2*x,0],
+    "H":[3*x,0],
+    "*":[4*x,0,  80, 210],
+    "F":[r+0*x,0],
+    "-P": [r+1*x,0],
+    "L":[r+2*x,0],
+    "-T":[r+3*x,0],
+    "D":[r+4*x,0],
+    "K":[x*1,l],
+    "W":[x*2,l],
+    "R-":[x*3,l],
+    "-R":[x*0+r,l],
+    "B":[x*1+r,l],
+    "G":[x*2+r,l],
+    "-S":[x*3+r,l],
+    "Z":[x*4+r,l],
+    "A":[x*2+30, v],
+    "O":[x*3+20, v],
+    "E":[x*5-00, v],
+    "U":[x*6-10, v]
+  };
+
+  var img = document.getElementById("board");
+  var boardlink_big = document.getElementById("boardlink_big");
+  var boardlink_small = document.getElementById("boardlink_small");
+
+  function refresh(){
+    var img_url = "board"+(pressed.length?"_":"")+pressed.join("_")+".png";
+    var small_img_url = "board_small"+(pressed.length?"_":"")+pressed.join("_")+".png";
+    img.src = img_url;
+    boardlink_big.href = img_url;
+    boardlink_big.innerText = document.location.href+img_url;
+    boardlink_small.href = small_img_url;
+    boardlink_small.innerText = document.location.href+small_img_url;
+    img.style.opacity = 0.75;
+  }
+
+  function toggle(key){
+    if (pressed.indexOf(key)!=-1){
+  console.log("Removing "+key);
+      pressed.splice(pressed.indexOf(key),1);
+    } else {
+  console.log("Adding "+key);
+      pressed.push(key);
+    }
+  }
+
+  img.onclick = function(evt) {
+    var x = evt.offsetX, y = evt.offsetY;
+    for (var key in keymap) {
+      if (keymap.hasOwnProperty(key)) {
+        var place = keymap[key];
+        var left=place[0], top=place[1],
+            width = place[2] || 60, height=place[3] || 100;
+        if (left < x && x < left+width && top < y && y < top+height) {
+          toggle(key);
+          refresh();
+        }
+      }
+    }
+  };
+
+  img.onload = function(evt){
+    console.log("Done loading");
+    img.style.opacity = 1;
+  };
+  refresh();
+  img.style.opacity = 1;
+};
+    </script>
+  </body>
+</html>

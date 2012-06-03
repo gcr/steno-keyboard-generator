@@ -43,7 +43,7 @@ def keyboard(keys=""):
                   timeout=(60*60*24*365
                            if len(pressed_keys)<2 else 3600)))
     res.headers['Content-type'] = 'image/png'
-    res.headers['Cache-Control'] = "max-age=172800, public"
+    res.headers['Cache-Control'] = "min-fresh==172800, max-age=172800, public"
 
     return res
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8
 
-from flask import Flask, make_response
+from flask import Flask, make_response, render_template
 from cStringIO import StringIO
 from keyboard import draw_keyboard_to_png
 from werkzeug.contrib.cache import FileSystemCache
@@ -9,7 +9,7 @@ from werkzeug.contrib.cache import FileSystemCache
 app = Flask(__name__)
 
 cache = FileSystemCache("./cache",
-                        threshold=1024*8
+                        threshold=1024*8,
                         default_timeout=6000)
 
 def keys_key(pressed_keys,small):
@@ -29,9 +29,10 @@ VALID_KEYS = set(["S-","T-","P-","H","K","W","R-","A","O","*","E","U","F","-R","
 
 @app.route('/')
 def show_page():
-    return "Hello world"
+    return render_template('index.htm')
 
 @app.route('/board.png')
+@app.route('/board_.png')
 @app.route('/board_<keys>.png')
 def keyboard(keys=""):
     pressed_keys = keys.upper().split("_")
@@ -42,6 +43,8 @@ def keyboard(keys=""):
                   timeout=(60*60*24*365
                            if len(pressed_keys)<2 else 3600)))
     res.headers['Content-type'] = 'image/png'
+    res.headers['Cache-Control'] = "max-age=172800, public"
+
     return res
 
 if __name__ == '__main__':

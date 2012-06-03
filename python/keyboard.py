@@ -87,7 +87,7 @@ def pick_letter(ltr):
 def pick_bold(ltr,keys):
     return ltr in keys
 def pick_lettercolor(ltr,keys):
-    return (1,1,1) if ltr in keys else (0.5,.5,.5)
+    return (1,1,1) if ltr in keys or len(keys)==0 else (0.5,.5,.5)
 def pick_color(base,ltr,keys):
     keys = set(keys)
     for (s, choice) in color_groups:
@@ -169,4 +169,4 @@ def draw_keyboard_to_png(keys, file, scale=1):
     draw_keyboard_to_ctx(ctx, keys, scale=1)
     surface.write_to_png(file)
 
-draw_keyboard_to_png(["K","W","R-"], "test.png")
+#draw_keyboard_to_png(["K","W","R-"], "test.png")

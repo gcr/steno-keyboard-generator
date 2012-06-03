@@ -5,7 +5,8 @@ import cairo
 
 def blend(a, scale, b):
     """
-    Returns a color 'scale' of the way between 'a' and 'b'.
+    Returns a color that's 'scale' of the way between 'a' and 'b'.
+    (Interpolates RGB space; very simple)
     """
     ar,ag,ab = a
     br,bg,bb = b
@@ -14,13 +15,15 @@ def blend(a, scale, b):
             min(255, max(0, bb- (bb-ab)*(1-scale))))
 
 def rect_shape(ctx, inset, width,height):
+    """
+    A rectangular key shape at 0,0.
+    """
     ctx.rectangle(inset,inset,  width-inset-inset, height-inset-inset)
     ctx.fill()
 
 def round_shape(ctx, inset, width,height):
     """
-    Draws a key at 0,0 with the given inset
-    and fill.
+    Draws a round key shape at 0,0 with a fill.
     """
     right = width-inset
     bottom_edge = height - 20 - inset*0.7
@@ -55,6 +58,9 @@ def draw_key_base(ctx, shape, base_color, width=60, height=100):
     shape(ctx, 4+4, width,height)
 
 def draw_key_shadow(ctx,shape,width,height):
+    """
+    Draw the given shape several times to imitate box blur.
+    """
     ctx.save()
     for x in xrange(5,15):
         for y in xrange(5,15):
@@ -65,10 +71,10 @@ def draw_key_shadow(ctx,shape,width,height):
     ctx.restore()
 
 
-
 def draw_key(ctx, shape, base_color, letter, lettercolor, bold, width=60, height=100):
     """
     Draw a key with the given letter.
+    Includes shadow, base, and text.
     """
     draw_key_shadow(ctx,shape,width,height)
     draw_key_base(ctx,shape,base_color,width,height)

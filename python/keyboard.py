@@ -3,6 +3,9 @@
 
 from key import *
 
+
+# Tint_map maps "real" (spellable) letters to RGB colors.
+# Note that color_groups maps steno letters to "real" ones.
 tint_map = {
     "*": (255,128,64),
     "A": (157,243,72),
@@ -98,6 +101,7 @@ def pick_color(base,ltr,keys):
             keys = keys - s
     return base
 
+# Draws a keyboard with the given pressed keys.
 def draw_keyboard(ctx, keys):
     base_color = (.06,.06,.06)
     def b(ltr, width=60,height=100):

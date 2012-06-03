@@ -64,10 +64,8 @@ window.onload = function(){
 
   function toggle(key){
     if (pressed.indexOf(key)!=-1){
-  console.log("Removing "+key);
       pressed.splice(pressed.indexOf(key),1);
     } else {
-  console.log("Adding "+key);
       pressed.push(key);
     }
   }
@@ -88,7 +86,6 @@ window.onload = function(){
   };
 
   img.onload = function(evt){
-    console.log("Done loading");
     img.style.opacity = 1;
   };
   refresh();

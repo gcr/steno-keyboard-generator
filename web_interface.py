@@ -47,5 +47,6 @@ def keyboard(keys=""):
 
     return res
 
+application = app # compatibility
 if __name__ == '__main__':
     app.run()
